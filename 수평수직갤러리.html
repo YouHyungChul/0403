@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #mask{
+            width: 200px;
+            height: 200px;
+            background: yellow;
+            margin: auto;
+            margin-top: 100px;
+            position: relative;
+            overflow: hidden;
+        }
+    </style>
+    <script src="../js/lib.js"></script>
+    <script>
+        var count = 0;
+        var arr = ['1.jpg',
+        '2.jpg',
+        '3.jpg',
+        '4.jpg',
+        '5.jpg',
+        '6.jpg',
+        '7.jpg',
+        '8.jpg',
+        '9.jpg',
+        '10.jpg',
+        '11.jpg',
+        '12.jpg',
+        '13.jpg',
+        '14.jpg',
+        '15.jpg',
+        '16.jpg']
+        var targetX=0;
+        var targetY=0;
+        var a = 0.1;
+        var posNum=[0,-200,-400,-600];
+
+        var mask;
+        var container;
+        window.addEventListener("load", function(){
+            
+            mask = document.getElementById("mask");
+            container = document.createElement("div");
+            container.style.width = 800 + "px";
+            container.style.width = 800 + "px";
+            container.style.position="absolute";
+            container.style.left=0 + "px";
+            container.style.top=0+"px";
+            container.style.background = "gray";
+
+
+            createImage();
+            setInterval(move,1);
+            setInterval(giveT,2000);
+
+       
+        });
+
+        // 16개의 이미지를 보여주자 
+        function createImage(){
+
+
+            for(var i=0; i<4; i++){
+                for(var j=0; j<4; j++){ 
+                     var img = document.createElement("img");
+         
+            img.src = "../images/background/" + arr[count];
+            // 절대위치로 지정해야 하는 이유?
+            // 자동으로 움직일 때 그 좌표가 명시되어야 target지점이 생긴다
+            img.style.position="absolute";
+            img.style.left=(200*j) + "px";
+            img.style.top=(200*i)+"px";
+            img.style.width=200 + "px";
+            img.style.height=200 + "px";
+
+            container.appendChild(img);
+            //마스크에 컨테이너 부착!!
+            count ++;
+                }
+            }
+          
+            mask.appendChild(container);
+        }
+
+        function giveT(){
+            //컨테이너가 x,y축 0~ -600 사이의 값을 이동하게 한다!!
+            targetX=posNum[getRandom(0, posNum.length-1)] ;
+            targetY=posNum[getRandom(0, posNum.length-1)] ;
+        }
+
+        function move(){
+            container.style.left= parseFloat(container.style.left) +a*(targetX-  parseFloat(container.style.left)) +  "px";
+            container.style.top= parseFloat(container.style.top) +a*(targetY-  parseFloat(container.style.top)) +  "px";
+
+        }
+    </script>
+</head>
+<body>
+    <div id="mask"></div>
+    <!-- <img src="../images/background/1.jpg"/> -->
+</body>
+</html>

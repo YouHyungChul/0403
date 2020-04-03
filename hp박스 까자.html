@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width: 1000px;
+            height: 600px;
+            background: deepskyblue;
+            margin: auto;
+            overflow: hidden; /*자식 때문에*/
+        }
+        /* 자식요소를 띄울경우 반드시 부모에는 overflow 속성이 명시되어야 한다. */
+        #dashBoard{
+            width: 200px;
+            height: 100%;
+            background: goldenrod;
+            float: left;
+            text-align: center;
+            padding-top: 10px;
+        }
+        #container{
+            width: 800px;
+            height: 100%;
+            float: left;
+            background-size: 100% 600px;
+            background-image: url("../images/fire.jpg");
+            position: relative;
+        }
+        button{
+            width: 95%;
+            background: #4caf50;
+            color:#FFFFFF;
+            padding:12px;
+        }
+        input[type='text']{
+            width: 95%;
+            height: 45px;
+            font-size: 20pt;
+            margin-top: 5px;
+        }
+        #hpArea{
+            width: 100%;
+            height: 180px;
+            background: firebrick;
+            position: relative;
+        }
+        #scoreArea{
+            width: 100%;
+            font-size: 40pt;
+            font-weight: bold;
+        }
+    </style>
+    <script src="../js/lib.js"></script>
+    <script>
+        var spanEach = new Array();
+        var spanWord;
+        var spanhp;
+        var span;
+        var t_input;
+        var hpArea;
+        var scoreArea;
+        var container;
+        var step = 0;
+        var score =0;
+        var flag=false; //단어가 내려올지 여부를  결정하는 여부를 결정하는 변수!!
+
+        // 사용자가 입력한 텍스트와 게임에 등장할 단어는 반복문으로
+        // 비교되어야 하므로, 배열화 되어있어야 한다!!!
+        var word = [
+            "쓰레기",
+            "강아지",
+            "일본",
+            "물컵",
+            "노트북",
+            "마우스",
+            "핸드폰",
+            "캐나다",
+            "난다",
+            "뺵다방"];
+        
+        // 지역변수인 span을 보관할 배열
+        var wordArray = new Array(word.length); //배열의 수만큼을 확보하자
+        window.addEventListener("load", function(){
+            hpArea = document.getElementById("hpArea");
+            scoreArea = document.getElementById("scoreArea");
+            container = document.getElementById("container");
+            t_input = document.getElementById("t_input");
+
+            t_input.addEventListener("keyup", function(e){
+                if(e.keyCode==13){
+                    wordCheck();
+                }
+              
+            });
+
+            createHP();
+            getScore(); // 점수출력!!
+            createWord(); // 단어 생성하기!!
+            setInterval("move()",10);
+
+        });
+
+        //에너지 박스 만들기
+        function createHP(){
+            for(var a=0; a<3; a++){
+                for(var i=0; i<3; i++){
+                spanhp = document.createElement("span");
+                spanhp.style.display = "inline-block"; // width, height 가능하도록
+                spanhp.style.width = 65 + "px";
+                spanhp.style.height = 59 + "px";
+                spanhp.style.border = "1px solid yellow";
+                spanhp.style.background="red";
+                spanhp.style.position = "absolute";
+                spanhp.style.left = (i*66) + "px";
+                spanhp.style.top = (a*60) + "px";
+                
+                spanEach[i] = spanhp;
+
+            // hpArea에 부착하자!!
+            hpArea.appendChild(spanhp);
+            }
+            }
+        }
+
+        function getScore(){
+            scoreArea.innerHTML = score + "점";
+        }
+
+        function createWord(){
+            for(var i=0; i<10; i++){
+            spanWord = document.createElement("span");
+            spanWord.innerHTML=word[i];
+            spanWord.style.fontWeight="bold";
+            spanWord. style.position="absolute";
+            spanWord.style.left = 50 +(i*70) + "px";
+            spanWord.style.top =-50-getRandom(0,100)+ "px";
+            spanWord.style.color = "#FFFFFF";
+            spanWord.style.fontSize = 20 + "px";
+
+            container.appendChild(spanWord);
+
+            // 배열에 보관해 놓기~~
+            wordArray[i]=spanWord;
+            }
+        }
+
+        //입력한 단어와 배열로 존재하는 span의 텍스트를 비교하자!!
+        function wordCheck(){
+            var count=0;
+            for(var i=0; i<wordArray.length; i++){
+                if(t_input.value == wordArray[i].innerHTML){
+                    // span이 container에서 제거되어야 하고 스코어 추가
+                    container.removeChild(wordArray[i]);
+                    score += 10;
+                    getScore();
+                    count++;
+                }
+            }
+            //반복문이 다 돌고나서 카운트 결과를 체크한다
+            if(count==0){                
+                    score -=5;
+                    getScore();
+            }
+            t_input.value = "";
+        }
+
+        // 단어들을 일정시간 간격으로 내려오게 하자! (y츅 증가)
+        function move(){
+            if(flag){
+                step =10;
+                for(var i=0; i<wordArray.length; i++){
+                wordArray[i].style.top =parseFloat(wordArray[i].style.top) + step + "px";
+            }
+            }
+        }
+
+            // spaneach 가 hp
+        function removeHP(){
+            if(spanWord.style.top == 550 + "px"){
+                spanhp.style.opacity = 0.6;
+            }
+
+
+        }
+        
+        //단어를 진행할지 여부 처리와, start | pause
+        function setFlag(){
+            flag = !flag;
+            var bt = document.querySelector("button");
+
+            bt.innerText =(flag) ?  "Pause" : "Start";
+        }
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="dashBoard">
+            <button onclick="setFlag()">Start</button>
+            <input id="t_input" type="text"/>
+            <div id="hpArea"></div>
+            <div id="scoreArea"></div>
+        </div>
+        <div id="container"></div>
+    </div>
+    <!-- <img src="../images/fire.jpg"/> -->
+</body>
+</html>

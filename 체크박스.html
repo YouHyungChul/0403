@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        var arr;
+        /* id와 name의 공통점 및 차이점
+            1) 공통점: 문서내의 특정 태그 요소들을 지적하기 위함이다
+            2) 차이점 : id는 중복을 허용하지 않고, name은 중복이 가능하다
+                            이때 name이 중복될 경수 내부적을 
+        */
+
+        function checkAll(){
+            arr = document.getElementsByName("c");
+            for(var i=0; i<arr.length;i++){
+                arr[i].checked = true;
+            }
+        }
+        
+        function checkOut(){
+            arr = document.getElementsByName("c");
+            for(var i=0; i<arr.length;i++){
+                arr[i].checked = false;
+        }
+        }
+    </script>
+</head>
+<body>
+    <input type="checkbox" onclick="checkAll()"/>모두체크<br>
+    <input type="checkbox" onclick="checkOut()"/>모두체크<br>
+
+    <input type="checkbox" name="c"/>사과<br>
+    <input type="checkbox"  name="c"/>바나나<br>
+    <input type="checkbox"  name="c"/>딸기<br>
+    <input type="checkbox"  name="c"/>수박<br>
+    <input type="checkbox"  name="c"/>고추<br>
+    <input type="checkbox"  name="c"/>고구마<br>
+    <input type="checkbox"  name="c"/>상추<br>
+    <input type="checkbox"  name="c"/>깻잎<br>
+    <input type="checkbox"  name="c"/>망고<br>
+
+</body>
+</html>

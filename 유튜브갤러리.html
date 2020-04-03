@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #wrapper{
+            width: 600px;
+            height: 500px;
+            background: yellow;
+            margin: auto;
+            position: relative;
+        }
+        #thumb{
+            width: 100%;
+            height: 100px;
+            background: gray;
+        }
+        #detail{
+            width: 100%;
+            height: 400px;
+            background: deeppink;
+        }
+    </style>
+
+
+    <script>
+    var thumb;
+    var detail;
+    var arr = [
+    'https://www.youtube.com/embed/MKhHSYdywQo?list=RDMKhHSYdywQo',   
+    'https://www.youtube.com/embed/bXBiLAI2qc0?list=RDMKhHSYdywQo',
+    'https://www.youtube.com/embed/taCzp52XCEQ?list=RDMKhHSYdywQo',
+    'https://www.youtube.com/embed/bXBiLAI2qc0?list=RDMKhHSYdywQo',
+    'https://www.youtube.com/embed/bXBiLAI2qc0?list=RDMKhHSYdywQo'];
+
+        window.addEventListener("load", function(){
+            thumb = document.getElementById("thumb");
+            detail = document.getElementById("detail");
+            createMovie()
+        });
+
+        function createMovie(){
+            for( i=0; i<5; i++){
+                var iframe = document.createElement("iframe");
+            iframe.src = arr[i];
+            iframe.width=100+"px";
+            iframe.height=100+"px";
+            iframe.addEventListener("mouseover", function(){
+                showDetail(arr[i]);
+            });
+
+            thumb.appendChild(iframe);
+            }
+
+        }
+
+        function showDetail(src){
+            var myFrame = document.getElementById("myFrame");
+            myFrame.src=src;
+        }
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="thumb"></div>
+        <div id="detail">
+            <iframe id="myFrame" width="600px" height="400px"></iframe>
+        </div>
+    </div>
+</body>
+</html>
